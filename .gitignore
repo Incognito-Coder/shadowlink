@@ -1,0 +1,48 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+shadowlink
+build/
+dist/
+
+# Test coverage
+*.out
+coverage.html
+
+# Go workspace
+*.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Config files with secrets
+*.yaml
+*.yml
+!*.example.yaml
+!*.example.yml
+
+# Certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# Temporary files
+tmp/
+temp/
+*.tmp

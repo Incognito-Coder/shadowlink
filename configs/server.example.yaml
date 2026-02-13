@@ -1,0 +1,99 @@
+# ShadowLink Server Configuration
+# Complete example with all available options
+
+mode: server
+verbose: true
+profile: latency # balanced, latency, throughput, gaming, lowcpu
+
+# Listen address for tunnel connections
+listen: 0.0.0.0:8443
+
+# Transport configuration
+transport:
+  type: https # tcp, kcp, ws, wss, http, https
+
+  # TLS settings (required for wss, https)
+  tls:
+    enabled: true
+    cert_file: /etc/shadowlink/certs/cert.pem
+    key_file: /etc/shadowlink/certs/key.pem
+
+  # KCP settings (used when type=kcp)
+  kcp:
+    nodelay: 1
+    interval: 10
+    resend: 2
+    nc: 1
+    sndwnd: 1024
+    rcvwnd: 1024
+    mtu: 1350
+
+  # WebSocket settings
+  websocket:
+    read_buffer_size: 32768
+    write_buffer_size: 32768
+    compression: false
+
+# Encryption configuration
+encryption:
+  psk: "CHANGE-THIS-TO-A-STRONG-RANDOM-KEY"
+  algorithm: aes-gcm
+
+# Stream multiplexer
+multiplexer:
+  enabled: true
+  keepalive: 10
+  max_recv_buffer: 4194304
+  max_stream_buffer: 4194304
+  frame_size: 32768
+  version: 2
+
+# Traffic obfuscation
+obfuscation:
+  enabled: true
+  min_padding: 16
+  max_padding: 512
+  min_delay_ms: 5
+  max_delay_ms: 30
+  burst_chance: 0.15
+
+# HTTP mimicry settings
+http_mimic:
+  enabled: true
+  fake_domain: www.cloudflare.com
+  fake_path: /api/v1/status
+  user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+  chunked_encoding: true
+  session_cookie: true
+  custom_headers:
+    - "Accept: application/json"
+    - "Accept-Language: en-US,en;q=0.9"
+
+# Performance tuning
+performance:
+  tcp_nodelay: true
+  tcp_keepalive: 30
+  tcp_read_buffer: 4194304
+  tcp_write_buffer: 4194304
+  max_connections: 10000
+  cleanup_interval: 10
+  session_timeout: 60
+  connection_timeout: 30
+  stream_timeout: 120
+  max_udp_flows: 5000
+  udp_flow_timeout: 180
+  udp_buffer_size: 2097152
+
+# Port mappings
+maps:
+  - protocol: tcp
+    bind: 0.0.0.0:443
+    target: 127.0.0.1:443
+
+  - protocol: tcp
+    bind: 0.0.0.0:2222
+    target: 127.0.0.1:22
+
+  - protocol: udp
+    bind: 0.0.0.0:51820
+    target: 127.0.0.1:51820

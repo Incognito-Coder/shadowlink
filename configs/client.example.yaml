@@ -1,0 +1,97 @@
+# ShadowLink Client Configuration
+# Complete example with all available options
+
+mode: client
+verbose: true
+profile: latency # balanced, latency, throughput, gaming, lowcpu
+
+# Encryption configuration (must match server)
+encryption:
+  psk: "CHANGE-THIS-TO-MATCH-SERVER-PSK"
+  algorithm: aes-gcm
+
+# Connection paths (can have multiple for failover)
+paths:
+  # Primary path
+  - transport: https
+    address: server1.example.com:8443
+    pool_size: 3 # Number of concurrent connections
+    aggressive_pool: true # Aggressive pool growth
+    retry_interval: 3s # Retry interval on failure
+    dial_timeout: 10s # Connection timeout
+
+  # Backup path (optional)
+  - transport: kcp
+    address: server2.example.com:8444
+    pool_size: 2
+    aggressive_pool: false
+    retry_interval: 5s
+    dial_timeout: 10s
+
+# Transport configuration
+transport:
+  type: https
+
+  # TLS settings
+  tls:
+    enabled: true
+    insecure: true # Skip certificate verification (use for self-signed certs)
+    # ca_file: /etc/shadowlink/certs/ca.pem  # Optional CA certificate
+
+  # KCP settings
+  kcp:
+    nodelay: 1
+    interval: 10
+    resend: 2
+    nc: 1
+    sndwnd: 1024
+    rcvwnd: 1024
+    mtu: 1350
+
+  # WebSocket settings
+  websocket:
+    read_buffer_size: 32768
+    write_buffer_size: 32768
+    compression: false
+
+# Stream multiplexer (must match server)
+multiplexer:
+  enabled: true
+  keepalive: 10
+  max_recv_buffer: 4194304
+  max_stream_buffer: 4194304
+  frame_size: 32768
+  version: 2
+
+# Traffic obfuscation (must match server)
+obfuscation:
+  enabled: true
+  min_padding: 16
+  max_padding: 512
+  min_delay_ms: 5
+  max_delay_ms: 30
+  burst_chance: 0.15
+
+# HTTP mimicry settings (must match server)
+http_mimic:
+  enabled: true
+  fake_domain: www.cloudflare.com
+  fake_path: /api/v1/status
+  user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+  chunked_encoding: true
+  session_cookie: true
+  custom_headers:
+    - "Accept: application/json"
+    - "Accept-Language: en-US,en;q=0.9"
+
+# Performance tuning
+performance:
+  tcp_nodelay: true
+  tcp_keepalive: 30
+  tcp_read_buffer: 4194304
+  tcp_write_buffer: 4194304
+  max_connections: 10000
+  cleanup_interval: 10
+  connection_timeout: 30
+  stream_timeout: 120
+  udp_buffer_size: 2097152
