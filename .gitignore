@@ -7,6 +7,7 @@
 shadowlink
 build/
 dist/
+vendor/
 
 # Test coverage
 *.out
@@ -32,7 +33,6 @@ logs/
 
 # Config files with secrets
 *.yaml
-*.yml
 !*.example.yaml
 !*.example.yml
 
