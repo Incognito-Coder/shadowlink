@@ -4,10 +4,9 @@
 
 # Variables
 BINARY_NAME=shadowlink
-VERSION?=1.0.0
 COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "dev")
 BUILD_TIME?=$(shell date -u '+%Y-%m-%d_%H:%M:%S')
-LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(BUILD_TIME) -s -w"
+LDFLAGS=-ldflags "-X main.commit=$(COMMIT) -X main.date=$(BUILD_TIME) -s -w"
 
 # Build directories
 BUILD_DIR=build
@@ -147,19 +146,18 @@ lint:
 release: build-all
 	@echo "Creating release archives..."
 	@mkdir -p $(DIST_DIR)/release
-	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-$(VERSION)-linux-amd64.tar.gz $(BINARY_NAME)-linux-amd64
-	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-$(VERSION)-linux-arm64.tar.gz $(BINARY_NAME)-linux-arm64
-	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-$(VERSION)-linux-armv7.tar.gz $(BINARY_NAME)-linux-armv7
-	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-$(VERSION)-darwin-amd64.tar.gz $(BINARY_NAME)-darwin-amd64
-	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-$(VERSION)-darwin-arm64.tar.gz $(BINARY_NAME)-darwin-arm64
-	cd $(DIST_DIR) && zip -q release/$(BINARY_NAME)-$(VERSION)-windows-amd64.zip $(BINARY_NAME)-windows-amd64.exe
+	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-linux-amd64.tar.gz $(BINARY_NAME)-linux-amd64
+	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-linux-arm64.tar.gz $(BINARY_NAME)-linux-arm64
+	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-linux-armv7.tar.gz $(BINARY_NAME)-linux-armv7
+	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-darwin-amd64.tar.gz $(BINARY_NAME)-darwin-amd64
+	cd $(DIST_DIR) && tar -czf release/$(BINARY_NAME)-darwin-arm64.tar.gz $(BINARY_NAME)-darwin-arm64
+	cd $(DIST_DIR) && zip -q release/$(BINARY_NAME)-windows-amd64.zip $(BINARY_NAME)-windows-amd64.exe
 	@echo "Release archives created in $(DIST_DIR)/release/"
 
 ## docker-build: Build Docker image
 docker-build:
 	@echo "Building Docker image..."
-	docker build -t shadowlink:$(VERSION) .
-	docker tag shadowlink:$(VERSION) shadowlink:latest
+	docker build -t shadowlink:latest .
 	@echo "Docker image built"
 
 .DEFAULT_GOAL := help
