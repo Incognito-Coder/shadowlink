@@ -130,18 +130,25 @@ download_binary() {
     
     log_info "Latest version: ${GREEN}$version${NC}"
     
-    # Determine architecture
-    local arch
+    # Determine OS and architecture
+    local os arch
+    case "$(uname -s)" in
+        Linux)   os="linux" ;;
+        Darwin)  os="darwin" ;;
+        *)
+            log_error "Unsupported OS: $(uname -s)"
+            exit 1
+            ;;
+    esac
     case "$(uname -m)" in
         x86_64)  arch="amd64" ;;
         aarch64) arch="arm64" ;;
         armv7l)  arch="armv7" ;;
         *)       arch="amd64" ;;
     esac
-    
     # Download binary
-    local binary_url="${GITHUB_REPO}/releases/download/${version}/shadowlink-${arch}.tar.gz"
-    local temp_binary="/tmp/shadowlink-${arch}.tar.gz"
+    local binary_url="${GITHUB_REPO}/releases/download/${version}/shadowlink-${os}-${arch}.tar.gz"
+    local temp_binary="/tmp/shadowlink-${os}-${arch}.tar.gz"
     
     log_info "Downloading ShadowLink binary..."
     
