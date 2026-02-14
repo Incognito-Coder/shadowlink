@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/Incognito-Coder/ShadowLink/internal/session"
 )
 
 var (
@@ -159,8 +161,8 @@ func runServer(configFile string, verbose bool) error {
 // runClient starts the client
 func runClient(configFile string, verbose bool) error {
 	fmt.Printf("Starting ShadowLink client with config: %s\n", configFile)
-	// TODO: Implement client logic
-	return fmt.Errorf("not implemented yet - see internal/session/client.go")
+	client := &session.Client{}
+	return client.Start(configFile, verbose)
 }
 
 // generateConfig generates an example configuration
