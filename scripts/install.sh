@@ -164,7 +164,7 @@ download_binary() {
     
     # Install binary
     chmod +x $temp_binary
-    mv "/tmp/shadowlink-${arch}" "$INSTALL_DIR/shadowlink"
+    mv "/tmp/shadowlink-${os}-${arch}" "$INSTALL_DIR/shadowlink"
     
     log_success "ShadowLink binary installed to $INSTALL_DIR/shadowlink"
     
