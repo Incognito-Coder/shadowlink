@@ -281,6 +281,8 @@ EOF
     fi
     
     log_success "System optimizations applied"
+
+    main_menu
 }
 
 #=============================================================================
