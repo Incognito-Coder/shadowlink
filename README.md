@@ -74,7 +74,7 @@
 ### One-Line Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Incognito-Coder/ShadowLink/main/scripts/install.sh | sudo bash
+bash <(curl -Ls https://raw.githubusercontent.com/Incognito-Coder/ShadowLink/main/scripts/install.sh)
 ```
 
 ### Manual Installation
