@@ -140,8 +140,8 @@ download_binary() {
     esac
     
     # Download binary
-    local binary_url="${GITHUB_REPO}/releases/download/${version}/shadowlink-${arch}"
-    local temp_binary="/tmp/shadowlink-${arch}"
+    local binary_url="${GITHUB_REPO}/releases/download/${version}/shadowlink-${arch}.tar.gz"
+    local temp_binary="/tmp/shadowlink-${arch}.tar.gz"
     
     log_info "Downloading ShadowLink binary..."
     
@@ -150,9 +150,16 @@ download_binary() {
         exit 1
     fi
     
+    # Extract tar.gz file
+    if ! tar -xzf "$temp_binary" -C /tmp 2>/dev/null; then
+        log_error "Failed to extract binary"
+        rm -f "$temp_binary"
+        exit 1
+    fi
+    
     # Install binary
-    chmod +x "$temp_binary"
-    mv "$temp_binary" "$INSTALL_DIR/shadowlink"
+    chmod +x $temp_binary
+    mv "/tmp/shadowlink-${arch}" "$INSTALL_DIR/shadowlink"
     
     log_success "ShadowLink binary installed to $INSTALL_DIR/shadowlink"
     
